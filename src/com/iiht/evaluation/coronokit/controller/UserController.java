@@ -189,7 +189,7 @@ public class UserController extends HttpServlet {
 	    if(kitdetail !=null) {
 	    	try {
 			kitDAO.additemstoportal(kitdetail);
-			view = "AdminPortal.jsp";
+			view = "addnewitems.jsp";
 			} catch (CoronaException e) {
 				// TODO Auto-generated catch block
 			view = "errorPage.jsp";
