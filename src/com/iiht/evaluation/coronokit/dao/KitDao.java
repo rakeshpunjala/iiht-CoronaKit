@@ -13,7 +13,6 @@ import java.util.List;
 import com.iiht.evaluation.coronokit.model.CoronaKit;
 import com.iiht.evaluation.coronokit.model.KitDetail;
 import com.iiht.evaluation.exception.CoronaException;
-
 import com.iiht.evaluation.coronokit.dao.ConnectionFactory;
 
 
@@ -25,6 +24,10 @@ import com.iiht.evaluation.coronokit.dao.ConnectionFactory;
 	public static final String ITEM_FETCH_QRY="SELECT price from items where item=?";
 	
 	public static final String ALLITEMS_FETCH_QRY="SELECT item,price,quantity from items";
+	
+	public static final String DEL_ITEM_QRY="DELETE from items WHERE item=?";
+	
+	public static final String GET_ALL_ROWS_COUNT= "SELECT item, count(*) FROM items";
    
 	public KitDetail addItemToCart(KitDetail kit) throws CoronaException {
 	
@@ -71,6 +74,40 @@ import com.iiht.evaluation.coronokit.dao.ConnectionFactory;
 		}
 		return kit;
 		}
+	
+public boolean deleteitemsfromportal(String itemname) throws CoronaException {
+	
+	boolean isDeleted = false;
+		
+	try(Connection con = ConnectionFactory.getConnection();
+			PreparedStatement pst = con.prepareStatement(DEL_ITEM_QRY);
+			PreparedStatement rows = con.prepareStatement(GET_ALL_ROWS_COUNT);
+				){
+		
+		ResultSet rsbefore = rows.executeQuery();
+		rsbefore.next();
+		int Totalrowsbeforedelete = rsbefore.getInt("count(*)");
+		
+		if(Totalrowsbeforedelete>=1) {
+		
+		pst.setString(1, itemname);	
+		pst.executeUpdate();
+		}else {
+		throw new CoronaException("Item Name is invalid");		
+		}
+		
+		ResultSet rsafter = rows.executeQuery();
+		rsafter.next();
+		int Totalrowsafterdelete = rsafter.getInt("count(*)");
+		
+		if((Totalrowsbeforedelete-Totalrowsafterdelete) ==1) {
+		isDeleted = true;		
+		}	
+		}catch(SQLException exp) {
+		throw new CoronaException("Deleting Name Failed");	
+		}
+	return isDeleted;
+}
 	
 	public List<KitDetail> getAllproducts() throws CoronaException {
 		
