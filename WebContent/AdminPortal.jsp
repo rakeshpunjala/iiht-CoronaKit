@@ -13,13 +13,14 @@
 <h1>Welcome To Admin Portal</h1>
 
 <hr>
-<a href="listproducts.jsp">All Items</a> &nbsp;
+<form action="listproducts" method="GET">
+<button>All Items</button> &nbsp;
+<a href="addnewitems.jsp">Add Items</a>  
+</form>
 
-<a href="addnewitems.jsp">Add Items</a>  &nbsp;
 
-<a href="deleteitems.jsp">Delete Items</a>  &nbsp;
 
-<a href="editproduct.jsp">Edit Item</a> 
+
 
 </hr>
 
