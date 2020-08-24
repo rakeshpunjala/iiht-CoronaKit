@@ -27,6 +27,7 @@
 <th>Item Name</th>
 <th>Price Per Piece (Rs)</th>
 <th>Quantity Available</th>
+<th>Action</th>
 
 
 </tr>
@@ -36,7 +37,11 @@
 <td>${product.price }</td>
 <td>${product.quantity }</td>
 
-
+<td>
+<a href="deleteitem?item=${product.productName }">DELETE</a>
+<span> </span>
+<a href="editContact?cid=${product.productName }">EDIT</a>
+</td>
 </c:forEach>
 
 </table>
