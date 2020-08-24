@@ -13,7 +13,9 @@
 
 <h2>List of All Products</h2>
 <form action="listproducts" method="GET">
-<button>Click here for all Products</button>
+<button>Click here for all Products</button> &nbsp;
+
+<a href="AdminPortal.jsp">Back to Admin Portal</a>
 </form>
 <br></br>
 <c:choose>
