@@ -19,6 +19,8 @@ import com.iiht.evaluation.coronokit.dao.ConnectionFactory;
 
 
     public class KitDao {
+    	
+    public static final String INSERT_ITEM_QRY="INSERT INTO items(item,price,quantity) VALUES(?,?,?)";	
 
 	public static final String ITEM_FETCH_QRY="SELECT price from items where item=?";
 	
@@ -48,6 +50,27 @@ import com.iiht.evaluation.coronokit.dao.ConnectionFactory;
 	return kit;
 		
 	}
+	
+	public KitDetail additemstoportal(KitDetail kit) throws CoronaException {
+		
+		if(kit!=null) {
+		try(Connection con = ConnectionFactory.getConnection();
+			PreparedStatement pst = con.prepareStatement(INSERT_ITEM_QRY);
+				){
+		
+			
+		pst.setString(1, kit.getProductName());	
+		pst.setInt(2, kit.getPrice());
+		pst.setInt(3, kit.getQuantity());
+	    pst.executeUpdate();
+			
+		}catch(SQLException exp) {
+		throw new CoronaException("Unable to add the Product");	
+		}
+			
+		}
+		return kit;
+		}
 	
 	public List<KitDetail> getAllproducts() throws CoronaException {
 		
