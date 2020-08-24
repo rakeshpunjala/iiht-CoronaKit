@@ -24,7 +24,8 @@ import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 
 
-@WebServlet({"/newuser","/report","/showproductstoadd","/listproducts","/addnewitems","/deleteitem"})
+
+@WebServlet({"/newuser","/report","/showproductstoadd","/listproducts","/addnewitems","/deleteitem","/edititem","/saveitem"})
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private KitDao kitDAO;
@@ -78,6 +79,12 @@ public class UserController extends HttpServlet {
 			case "/addnewitems":
 				viewName = addNewItemsToPortal(request, response);
 				break;
+			case "/edititem":
+				viewName = editItemsInPortal(request, response);
+				break;
+			case "/saveitem":
+				viewName = saveItemsInPortal(request, response);
+				break;	
 			case "/listproducts":
 				viewName = listproducts(request, response);
 				break;	
@@ -201,6 +208,49 @@ public class UserController extends HttpServlet {
 	    }
 	    	
 	    return view;
+	}
+	
+	private String editItemsInPortal(HttpServletRequest request, HttpServletResponse response) {
+		
+		String view = "";
+		String item = request.getParameter("item");
+		
+		try {
+			KitDetail kit = kitDAO.getItem(item);
+			request.setAttribute("kit", kit);
+			view = "editproduct.jsp";
+		} catch (CoronaException e) {
+			request.setAttribute("errMsg", e.getMessage());
+			view = "errorPage.jsp";
+		}
+
+
+		return view;
+	}
+	
+private String saveItemsInPortal(HttpServletRequest request, HttpServletResponse response) {
+		
+		String view = "";
+		
+		KitDetail kit = new KitDetail();
+		
+		kit.setProductName(request.getParameter("item"));
+		kit.setPrice(Integer.parseInt(request.getParameter("price")));
+		kit.setQuantity(Integer.parseInt(request.getParameter("quantity")));
+		
+		try {
+			kitDAO.save(kit);
+			request.setAttribute("msg", "Contact Saved Successfully");
+			view = "AdminPortal.jsp";
+		} catch (CoronaException e) {
+			request.setAttribute("errMsg", e.getMessage());
+			view = "errPage.jsp";
+		}
+		
+		
+
+
+		return view;
 	}
 
 	private String showNewUserForm(HttpServletRequest request, HttpServletResponse response) {
