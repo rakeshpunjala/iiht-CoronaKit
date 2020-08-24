@@ -22,7 +22,7 @@ border: 1px solid black;
 <table>
 <th>Enter Item Name</th>
 <th>Enter Quantity</th>
-<th>Enter Price</th>
+<th>Enter Price for each Piece</th>
 <th>Add</th>
 
 <tr>
