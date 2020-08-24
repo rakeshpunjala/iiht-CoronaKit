@@ -23,7 +23,8 @@ import com.iiht.evaluation.exception.CoronaException;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 
-@WebServlet({"/newuser","/report","/showproductstoadd","/listproducts","/addnewitems"})
+
+@WebServlet({"/newuser","/report","/showproductstoadd","/listproducts","/addnewitems","/deleteitem"})
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private KitDao kitDAO;
@@ -80,6 +81,9 @@ public class UserController extends HttpServlet {
 			case "/listproducts":
 				viewName = listproducts(request, response);
 				break;	
+			case "/deleteitem":
+				viewName = deleteItemFromPortal(request, response);
+				break;
 			case "/showproductstoadd":
 				viewName = addNewItemToKit(request, response);
 				break;
@@ -227,6 +231,23 @@ public class UserController extends HttpServlet {
 		
 		view = "showproductstoadd.jsp"; 
         return view;
+	}
+	
+	private String deleteItemFromPortal(HttpServletRequest request, HttpServletResponse response) {
+			
+		String itemname = request.getParameter("item");
+		String view = "";
+
+		try {
+			kitDAO.deleteitemsfromportal(itemname)	;	
+			request.setAttribute("msg","Item deleted");
+			view = "listproducts.jsp";
+		} catch (CoronaException e) {
+			request.setAttribute("errMsg", e.getMessage());
+			view = "errorPage.jsp";
+		}
+
+		return view;
 	}
 	
 private String showreport(HttpServletRequest request, HttpServletResponse response) {
