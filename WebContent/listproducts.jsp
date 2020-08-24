@@ -38,7 +38,7 @@
 <td>
 <a href="deleteitem?item=${product.productName }">DELETE</a>
 <span> </span>
-<a href="editContact?cid=${product.productName }">EDIT</a>
+<a href="edititem?item=${product.productName }">EDIT</a>
 </td>
 </c:forEach>
 
