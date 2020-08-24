@@ -17,6 +17,8 @@
 
 <a href="addnewitems.jsp">Add Items</a>  &nbsp;
 
+<a href="deleteitems.jsp">Delete Items</a>  &nbsp;
+
 <a href="editproduct.jsp">Edit Item</a> 
 
 </hr>
