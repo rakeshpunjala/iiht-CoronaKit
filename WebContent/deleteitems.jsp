@@ -19,20 +19,14 @@ border: 1px solid black;
 <fieldset>
 <legend>Delete Products</legend>
 <br></br>
-<table>
-<th>Enter Item Name</th>
-<th>Enter Quantity</th>
-<th>Enter Price for each Piece</th>
-<th>Add</th>
+<label for="item">Select Item</label>
 
-<tr>
-<td><input type="text" name="itemname"/></td>
-<td><input type="number" name="quantity"></td>
-<td><input type="number" name="price"></td>
-<td><button>Add</button></td>
-
-
-</table>
+<select name="items" id="items">
+  <option value="volvo">Volvo</option>
+  <option value="saab">Saab</option>
+  <option value="mercedes">Mercedes</option>
+  <option value="audi">Audi</option>
+</select>
 </fieldset>
 <br></br>
 </form> 
