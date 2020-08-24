@@ -15,7 +15,7 @@
 <hr>
 <a href="listproducts.jsp">All Items</a> &nbsp;
 
-<a href="newproduct.jsp">Add New Item</a>  &nbsp;
+<a href="addnewitems.jsp">Add Items</a>  &nbsp;
 
 <a href="editproduct.jsp">Edit Item</a> 
 
