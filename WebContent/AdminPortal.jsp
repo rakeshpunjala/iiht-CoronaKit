@@ -18,7 +18,9 @@
 <a href="addnewitems.jsp">Add Items</a>  
 </form>
 
-
+<c:if test="${msg != null }">
+		<p><strong>${msg }</strong>
+</c:if>
 
 
 
