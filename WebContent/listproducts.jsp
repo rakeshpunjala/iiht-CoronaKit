@@ -27,7 +27,7 @@
 <th>Item Name</th>
 <th>Price Per Piece (Rs)</th>
 <th>Quantity Available</th>
-<th>Action</th>
+
 
 </tr>
 <c:forEach items="${allproducts }" var="product">
@@ -36,11 +36,7 @@
 <td>${product.price }</td>
 <td>${product.quantity }</td>
 
-<td>
-<a href="deleteContact?cid=${product.productName }">DELETE</a>
-<span> </span>
-<a href="editContact?cid=${product.productName }">EDIT</a>
-</td>
+
 </c:forEach>
 
 </table>
