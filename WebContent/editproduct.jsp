@@ -10,7 +10,23 @@
 <jsp:include page="header.jsp"/>
 <hr/>
 
-<%-- Required View Template --%>
+<form action="saveitem" method="POST">
+	
+		<div>
+			<label>Item Name</label>
+			<input type="text" name="item" value="${kit.productName }" readonly required/>
+		</div>
+		<div>
+			<label>Price</label>
+			<input type="number" name="price" value="${kit.price }" required/>
+		</div>
+		<div>
+			<label>Quantity</label>
+			<input type="number" name="quantity" value="${kit.quantity }" required/>
+		</div>
+		
+		<button>SAVE</button>
+	</form>
 
 <hr/>	
 	<jsp:include page="footer.jsp"/>
