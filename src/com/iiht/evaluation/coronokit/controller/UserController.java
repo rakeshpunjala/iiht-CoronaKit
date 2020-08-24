@@ -23,7 +23,7 @@ import com.iiht.evaluation.exception.CoronaException;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 
-@WebServlet({"/newuser","/report","/showproductstoadd","/listproducts"})
+@WebServlet({"/newuser","/report","/showproductstoadd","/listproducts","/addnewitems"})
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private KitDao kitDAO;
@@ -74,8 +74,8 @@ public class UserController extends HttpServlet {
 			case "/newuser":
 				viewName = showNewUserForm(request, response);
 				break;
-			case "insertuser":
-				viewName = insertNewUser(request, response);
+			case "/addnewitems":
+				viewName = addNewItemsToPortal(request, response);
 				break;
 			case "/listproducts":
 				viewName = listproducts(request, response);
@@ -83,21 +83,7 @@ public class UserController extends HttpServlet {
 			case "/showproductstoadd":
 				viewName = addNewItemToKit(request, response);
 				break;
-			case "deleteitem":
-				viewName = deleteItemFromKit(request, response);
-				break;
-			case "showkit":
-				viewName = showKitDetails(request, response);
-				break;
-			case "placeorder":
-				viewName = showPlaceOrderForm(request, response);
-				break;
-			case "saveorder":
-				viewName = saveOrderForDelivery(request, response);
-				break;	
-			case "ordersummary":
-				viewName = showOrderSummary(request, response);
-				break;	
+		
 			case "/report":
 				viewName = showreport(request, response);
 				break;	
@@ -113,30 +99,8 @@ public class UserController extends HttpServlet {
 	
 	}
 
-	private String showOrderSummary(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String saveOrderForDelivery(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String showPlaceOrderForm(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String showKitDetails(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String deleteItemFromKit(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
+	
+	
 
 	private String addNewItemToKit(HttpServletRequest request, HttpServletResponse response) {
 		
@@ -211,9 +175,28 @@ public class UserController extends HttpServlet {
 		 
 	
 
-	private String insertNewUser(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
+	private String addNewItemsToPortal(HttpServletRequest request, HttpServletResponse response) {
+	
+        HttpSession session = request.getSession();	
+		
+		String view="";
+		
+		KitDetail kitdetail = new KitDetail();
+		kitdetail.setProductName(request.getParameter("itemname"));
+		kitdetail.setQuantity(Integer.parseInt(request.getParameter("quantity")));
+	    kitdetail.setPrice(Integer.parseInt(request.getParameter("price")));
+	    
+	    if(kitdetail !=null) {
+	    	try {
+			kitDAO.additemstoportal(kitdetail);
+			view = "AdminPortal.jsp";
+			} catch (CoronaException e) {
+				// TODO Auto-generated catch block
+			view = "errorPage.jsp";
+			}	
+	    }
+	    	
+	    return view;
 	}
 
 	private String showNewUserForm(HttpServletRequest request, HttpServletResponse response) {
