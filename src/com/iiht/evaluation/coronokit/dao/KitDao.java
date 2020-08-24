@@ -13,6 +13,7 @@ import java.util.List;
 import com.iiht.evaluation.coronokit.model.CoronaKit;
 import com.iiht.evaluation.coronokit.model.KitDetail;
 import com.iiht.evaluation.exception.CoronaException;
+
 import com.iiht.evaluation.coronokit.dao.ConnectionFactory;
 
 
@@ -20,6 +21,8 @@ import com.iiht.evaluation.coronokit.dao.ConnectionFactory;
     public class KitDao {
     	
     public static final String INSERT_ITEM_QRY="INSERT INTO items(item,price,quantity) VALUES(?,?,?)";	
+    
+    public static final String UPD_CONT_QRY = "UPDATE items set price=?,quantity=? WHERE item=?";
 
 	public static final String ITEM_FETCH_QRY="SELECT price from items where item=?";
 	
@@ -28,6 +31,8 @@ import com.iiht.evaluation.coronokit.dao.ConnectionFactory;
 	public static final String DEL_ITEM_QRY="DELETE from items WHERE item=?";
 	
 	public static final String GET_ALL_ROWS_COUNT= "SELECT item, count(*) FROM items";
+	
+	public static final String GET_ITEM_BY_NAME_QRY = "SELECT item,price,quantity from items WHERE item=?";
    
 	public KitDetail addItemToCart(KitDetail kit) throws CoronaException {
 	
@@ -52,6 +57,49 @@ import com.iiht.evaluation.coronokit.dao.ConnectionFactory;
 	}
 	return kit;
 		
+	}
+	
+	public KitDetail getItem(String item) throws CoronaException {
+		KitDetail kit = null;
+			try (Connection con = ConnectionFactory.getConnection();
+				PreparedStatement pst = con.prepareStatement(GET_ITEM_BY_NAME_QRY);) {
+				
+				pst.setString(1, item);
+				
+				ResultSet rs = pst.executeQuery();
+				
+				if(rs.next()) {
+				kit = new KitDetail();
+				pst.setInt(2, kit.getPrice());
+			    pst.setInt(3, kit.getQuantity());
+			    pst.setString(1, kit.getProductName());
+				}
+			    
+			} catch (SQLException exp) {
+				throw new CoronaException("Saving Item Details failed!");
+			}
+		
+
+		return kit;
+	}
+	
+	public KitDetail save(KitDetail kit) throws CoronaException {
+		if (kit != null) {
+			try (Connection con = ConnectionFactory.getConnection();
+					PreparedStatement pst = con.prepareStatement(UPD_CONT_QRY);) {
+
+				pst.setInt(1, kit.getPrice());
+			    pst.setInt(2, kit.getQuantity());
+			    pst.setString(3, kit.getProductName());
+			
+
+				pst.executeUpdate();
+			} catch (SQLException exp) {
+				throw new CoronaException("Saving Item Details failed!");
+			}
+		}
+
+		return kit;
 	}
 	
 	public KitDetail additemstoportal(KitDetail kit) throws CoronaException {
