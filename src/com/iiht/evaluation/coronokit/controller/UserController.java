@@ -214,8 +214,10 @@ public class UserController extends HttpServlet {
 		
 		String view = "";
 		String item = request.getParameter("item");
+		System.out.println(item);
 		
 		try {
+			System.out.println("inside");
 			KitDetail kit = kitDAO.getItem(item);
 			request.setAttribute("kit", kit);
 			view = "editproduct.jsp";
@@ -240,7 +242,7 @@ private String saveItemsInPortal(HttpServletRequest request, HttpServletResponse
 		
 		try {
 			kitDAO.save(kit);
-			request.setAttribute("msg", "Contact Saved Successfully");
+			request.setAttribute("msg", "Item Saved Successfully");
 			view = "AdminPortal.jsp";
 		} catch (CoronaException e) {
 			request.setAttribute("errMsg", e.getMessage());
