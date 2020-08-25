@@ -10,11 +10,11 @@
 <jsp:include page="header.jsp"/>
 <hr/>
 
-<form action="saveitem" method="POST">
+<form action='saveitem' method="POST">
 	
 		<div>
 			<label>Item Name</label>
-			<input type="text" name="item" value="${kit.productName }" readonly required/>
+			<input type="text" name="item" value="${kit.productName }" required/>
 		</div>
 		<div>
 			<label>Price</label>
