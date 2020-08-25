@@ -60,7 +60,7 @@ import com.iiht.evaluation.coronokit.dao.ConnectionFactory;
 	}
 	
 	public KitDetail getItem(String item) throws CoronaException {
-		KitDetail kit = null;
+		KitDetail kit = new KitDetail();
 			try (Connection con = ConnectionFactory.getConnection();
 				PreparedStatement pst = con.prepareStatement(GET_ITEM_BY_NAME_QRY);) {
 				
@@ -69,11 +69,10 @@ import com.iiht.evaluation.coronokit.dao.ConnectionFactory;
 				ResultSet rs = pst.executeQuery();
 				
 				if(rs.next()) {
-				kit = new KitDetail();
-				pst.setInt(2, kit.getPrice());
-			    pst.setInt(3, kit.getQuantity());
-			    pst.setString(1, kit.getProductName());
-				}
+					kit.setProductName(rs.getString(1));
+					kit.setPrice(rs.getInt(2));
+					kit.setQuantity(rs.getInt(3));
+			    }
 			    
 			} catch (SQLException exp) {
 				throw new CoronaException("Saving Item Details failed!");
@@ -167,7 +166,6 @@ public boolean deleteitemsfromportal(String itemname) throws CoronaException {
 			
 			ResultSet rs = pst.executeQuery();
 			while(rs.next()) {
-			System.out.println("Inside "+rs.getString(1));
 			KitDetail kit = new KitDetail();
 			kit.setProductName(rs.getString(1));
 			kit.setPrice(rs.getInt(2));
