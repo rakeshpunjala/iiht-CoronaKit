@@ -10,21 +10,25 @@
 <jsp:include page="header.jsp"/>
 <hr/>
 
+<h3>Edit Item</h3>
+
 <form action='saveitem' method="POST">
 	
 		<div>
 			<label>Item Name</label>
-			<input type="text" name="item" value="${kit.productName }" required/>
+			<input type="text" name="item" value="${kit.productName }" readonly required/>
 		</div>
+		<br></br>
 		<div>
 			<label>Price</label>
 			<input type="number" name="price" value="${kit.price }" required/>
 		</div>
+		<br></br>
 		<div>
 			<label>Quantity</label>
 			<input type="number" name="quantity" value="${kit.quantity }" required/>
 		</div>
-		
+		<br></br>
 		<button>SAVE</button>
 	</form>
 
