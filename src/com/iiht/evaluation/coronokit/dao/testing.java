@@ -15,34 +15,37 @@ import com.iiht.evaluation.exception.CoronaException;
 public class testing {
 	
 	public static final String ALLITEMS_FETCH_QRY="SELECT * from items";
+	
+	public static final String GET_ITEM_BY_NAME_QRY = "SELECT item,price,quantity from items WHERE item=?";
 
-	public static void main(String[] args) throws CoronaException, SQLException{
+	public static void main(String[] args) throws SQLException{
 		// TODO Auto-generated method stub
-
+try {
 		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/coronakit", "root", "admin");
 		
-		PreparedStatement pst = con.prepareStatement(ALLITEMS_FETCH_QRY);
+		PreparedStatement pst = con.prepareStatement(GET_ITEM_BY_NAME_QRY);
+		KitDetail kit = new KitDetail();
+		pst.setString(1, "Sanitizer");
 		
-		List<KitDetail> allproducts = new ArrayList<KitDetail>();
+		ResultSet rs = pst.executeQuery();
 		
-		
-			
-			
-			ResultSet rs = pst.executeQuery();
-			while(rs.next()) {
-			KitDetail kit = new KitDetail();
+		if(rs.next()) {
 			kit.setProductName(rs.getString(1));
 			kit.setPrice(rs.getInt(2));
 			kit.setQuantity(rs.getInt(3));
-			
-			allproducts.add(kit);
+	    
+		}
 		
-			
-			}
-			System.out.println(allproducts);
-			if(allproducts.isEmpty()) {
-				allproducts=null;	
-			}
+		String name = kit.getProductName();		
+		int price = kit.getPrice();		
+		int quantity = kit.getQuantity();	
+		System.out.println(name);
+		System.out.println(price);
+		System.out.println(quantity);
+	    
+	} catch (SQLException exp) {
+		System.out.println(exp);
+	}
 		
 
 		}
