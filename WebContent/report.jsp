@@ -10,8 +10,9 @@
 <body>
 <jsp:include page="header.jsp"/>
 <hr/>
-
+<a href="index.jsp">HOME</a>
 <h2>Your Order</h2>
+
 
 
 <c:choose>
@@ -42,7 +43,7 @@
 
 </table>
 
-<br></br>
+
 
 
 
