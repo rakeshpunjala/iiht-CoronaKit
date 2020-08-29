@@ -125,8 +125,6 @@ public class UserController extends HttpServlet {
 		
 		HttpSession session = request.getSession();	
 		
-		//kitDAO.deleteitemsfromDB();
-		
 		String view="";
 		
 		KitDetail kitdetail = null;
@@ -361,6 +359,13 @@ private String saveItemsInPortal(HttpServletRequest request, HttpServletResponse
 		HttpSession session = request.getSession();	
 		
 		String view ="";
+		
+		try {
+			kitDAO.deleteitemsfromDB();
+		} catch (CoronaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		CoronaKit customer = new CoronaKit();
 		
