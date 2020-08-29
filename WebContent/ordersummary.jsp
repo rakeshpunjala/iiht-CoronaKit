@@ -40,7 +40,7 @@
 	</c:choose>
 
 <br></br>
-<a href="showproductstoadd.jsp">Go Back To Edit the Order</a> &nbsp; <a href="checkout">Check Out</a>
+<a href="showproductstoadd.jsp">Edit the Order</a> &nbsp; <a href="checkout">Check Out</a>
 
 <hr/>	
 	<jsp:include page="footer.jsp"/>
