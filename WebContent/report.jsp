@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,24 +14,31 @@
 <h2>Your Order</h2>
 
 
-<table border="1" cellspacing="5px" cellpadding="5px">
-
-<tr>Order Details</tr>
-<tr>
-<th>Item</th>
-<th>Quantity</th>
-<th>Price</th>
-<th>Date of Purchase</th>
-</tr>
-<c:forEach items="${items }" var="item">
-<tr>
-<td>${item.name }</td>
-<td>${item.quantity }</td>
-<td>${item.price }</td>
-<td>${Date }</td>
-
-</tr>
-</c:forEach>
+<c:choose>
+		<c:when test="${kits == null || kits.isEmpty() }">
+			<p>No Items Found Try <a href="newContact">adding</a> one</p>
+		</c:when>
+		<c:otherwise>
+			<table border="1" cellspacing="5px" cellpadding="5px">
+				<tr>
+					<th>Item</th>
+					<th>Quantity</th>
+					<th>@Each item</th>
+					<th>Amount</th>
+					
+				</tr>
+				<c:forEach items="${kits }" var="kit">
+					<tr>
+						<td>${kit.productName }</td>
+						<td>${kit.quantity }</td>
+						<td>${kit.price }</td>
+						<td>${kit.totalamount }</td>
+						
+					</tr>
+				</c:forEach>
+			</table>
+		</c:otherwise>
+	</c:choose>
 
 </table>
 
@@ -48,7 +56,7 @@ Contact Number : ${mobile }
 <br></br>
 Email ID :  ${email }
 
-<h2>Total Payment</h2>
+<h2>Total Payment : <Strong>${finalpayment }</Strong> </h2> 
 
 <hr/>	
 	<jsp:include page="footer.jsp"/>

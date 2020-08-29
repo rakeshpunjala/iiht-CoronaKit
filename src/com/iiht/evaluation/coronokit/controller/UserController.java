@@ -3,6 +3,7 @@ package com.iiht.evaluation.coronokit.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +26,8 @@ import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 
 
-@WebServlet({"/newuser","/report","/showproductstoadd","/listproducts","/addnewitems","/deleteitem","/edititem","/saveitem"})
+
+@WebServlet({"/newuser","/report","/showproductstoadd","/listproducts","/addnewitems","/deleteitem","/edititem","/saveitem","/ordersummary","/saveorder","/checkout"})
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private KitDao kitDAO;
@@ -94,8 +96,14 @@ public class UserController extends HttpServlet {
 			case "/showproductstoadd":
 				viewName = addNewItemToKit(request, response);
 				break;
-		
-			case "/report":
+			case "/ordersummary":
+				viewName = ordersummary(request, response);
+				break;	
+			case "/saveorder":
+				viewName = saveorder(request, response);
+				break;
+		    
+			case "/checkout":
 				viewName = showreport(request, response);
 				break;	
 			default : viewName = "notfound.jsp"; break;	
@@ -113,22 +121,32 @@ public class UserController extends HttpServlet {
 	
 	
 
-	private String addNewItemToKit(HttpServletRequest request, HttpServletResponse response) {
+	private String addNewItemToKit(HttpServletRequest request, HttpServletResponse response) throws CoronaException {
 		
 		HttpSession session = request.getSession();	
 		
+		//kitDAO.deleteitemsfromDB();
+		
 		String view="";
 		
-		KitDetail kitdetail = new KitDetail();
-		
+		KitDetail kitdetail = null;
+		List<KitDetail> kits = new ArrayList<>();
+		/*
+		 * List<String> itemnames = null; try { itemnames = kitDAO.getAllitemnames(); }
+		 * catch (CoronaException e1) { // TODO Auto-generated catch block
+		 * e1.printStackTrace(); } request.setAttribute("items", itemnames);
+		 */
 	   //List<String> itemsselected  = (List<String>)request.getParameterValues("names");
 		String[] item1=request.getParameterValues("names");
 		List<String> itemsselected = Arrays.asList(item1);
 	    System.out.println(itemsselected);
+	    
 	    for(String eachitem:itemsselected) {
+	    kitdetail = new KitDetail();		
 	    if(eachitem.equals("FaceMask")) {	
 	    int quan = Integer.parseInt(request.getParameter("Quantity1"));
 	    kitdetail.setQuantity(Integer.parseInt(request.getParameter("Quantity1")));
+	
 	    }
 	    if(eachitem.equals("Sanitizer")) {	
 		int quan = Integer.parseInt(request.getParameter("Quantity2"));
@@ -140,7 +158,6 @@ public class UserController extends HttpServlet {
 		}
 		
 		kitdetail.setProductName(eachitem);
-		
 		System.out.println(kitdetail.getProductName());
 		try {
 			kitDAO.addItemToCart(kitdetail);
@@ -157,16 +174,100 @@ public class UserController extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		   
+		try {
+			kitDAO.saveitemstodb(kitdetail);
+		} catch (CoronaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   
 	   }
-	
-		request.setAttribute("price", kitdetail.getTotalamount());
+	    System.out.println(kits);
+	    //session.setAttribute("kits", kits);
+	    //session.setAttribute("price", kitdetail.getTotalamount());
+		
 		view = "showproductstoadd.jsp"; 
+		
+
 		
 		
 		return view;
+	} 
+	
+	private String saveorder(HttpServletRequest request, HttpServletResponse response) {
+	    
+        HttpSession session = request.getSession();	
+		
+		String view="";
+		
+		List<KitDetail> kits = new ArrayList<>();
+		String[] item1=request.getParameterValues("names");
+		System.out.println(item1);
+		List<String> itemsselected = Arrays.asList(item1);
+	    System.out.println(itemsselected);
+	    for(String eachitem:itemsselected) {
+	    KitDetail kitdetail = new KitDetail();	
+	    if(eachitem.equals("FaceMask")) {	
+	    int quan = Integer.parseInt(request.getParameter("Quantity1"));
+	    kitdetail.setQuantity(Integer.parseInt(request.getParameter("Quantity1")));
+	    }
+	    if(eachitem.equals("Sanitizer")) {	
+		int quan = Integer.parseInt(request.getParameter("Quantity2"));
+		kitdetail.setQuantity(Integer.parseInt(request.getParameter("Quantity2")));
+		}
+	    if(eachitem.equals("Medicines")) {	
+		int quan = Integer.parseInt(request.getParameter("Quantity3"));
+		kitdetail.setQuantity(Integer.parseInt(request.getParameter("Quantity3")));
+		}
+		
+		kitdetail.setProductName(eachitem);
+		
+		
+		System.out.println(kitdetail.getProductName());
+		try {
+			kitDAO.addItemToCart(kitdetail);
+		if(eachitem.equals("FaceMask")) {
+			session.setAttribute("price1", kitdetail.getTotalamount());	
+		
+		}
+		if (eachitem.equals("Sanitizer")) {
+			session.setAttribute("price2", kitdetail.getTotalamount());	
+		}
+		if (eachitem.equals("Medicines")) {
+			session.setAttribute("price3", kitdetail.getTotalamount());	
+		}
+		} catch (CoronaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		kits.add(kitdetail);
+		
+	   }
+	    view="showproductstoadd.jsp";
+		return view;
 	}
 
+        private String ordersummary(HttpServletRequest request, HttpServletResponse response) {
+		
+		HttpSession session = request.getSession();	
+		
+		String view="";
+		
+		
+		List<KitDetail> kits = null;
+		try {
+			kits = kitDAO.fetchItemsFromDB();
+		} catch (CoronaException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		request.setAttribute("kits", kits);
+		view = "ordersummary.jsp"; 
+		
+		return view;
+	}
+	
 	private String listproducts(HttpServletRequest request, HttpServletResponse response) {
 	    
 		
@@ -308,14 +409,30 @@ private String showreport(HttpServletRequest request, HttpServletResponse respon
 	
 		String view ="";
 		
-		String something = "Nothing";
+		List<KitDetail> kits = null;
+		try {
+			kits = kitDAO.fetchItemsFromDB();
+		} catch (CoronaException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		request.setAttribute("kits", kits);
+		
+	
 
 		String name = (String) session.getAttribute("name");
 		String mobile = (String)session.getAttribute("mobile");
 		String email = (String)session.getAttribute("email");;
 		String address = (String)session.getAttribute("address");
 		
-		System.out.println("Name si Something" + name);
+	    try {
+		int finalpayment = kitDAO.getAlltotalamts();
+		request.setAttribute("finalpayment", finalpayment);
+		} catch (CoronaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		view = "report.jsp";
 		

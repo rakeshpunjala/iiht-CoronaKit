@@ -15,6 +15,9 @@ border: 1px solid black;
 <jsp:include page="header.jsp"/>
 <hr/>
 
+<a href="index.jsp">Home</a>
+<br></br>
+
 <form action="showproductstoadd">
 <fieldset>
 <legend>Shopping cart</legend>
@@ -22,12 +25,14 @@ border: 1px solid black;
 <table>
 <th>Item</th>
 <th>Quantity</th>
+<th>@Each item</th>
 <th colspan='2'>Add/Del</th>
 <th>Price</th>
 
 <tr>
 <td><input type="checkbox" name="names" value="FaceMask"/>Face Mask</td>
 <td><input type="number" name="Quantity1"></td>
+<td style="text-align:center">100 Rs</td>
 <td><button>Add</button></td>
 <td><button>clear</button></td>
 <td style="text-align:center">${price1 }</td>
@@ -36,6 +41,7 @@ border: 1px solid black;
 <tr>
 <td><input type="checkbox" name="names" value="Sanitizer"/>Sanitizer</td>
 <td><input type="number" name="Quantity2"></td>
+<td style="text-align:center">50 Rs</td>
 <td><button>Add</button></td>
 <td><button>clear</button></td>
 <td style="text-align:center">${price2 }</td>
@@ -44,6 +50,7 @@ border: 1px solid black;
 <tr>
 <td><input type="checkbox" name="names" value="Medicines"/>Corona Antibiotics</td>
 <td><input type="number" name="Quantity3"></td>
+<td style="text-align:center">200 Rs</td>
 <td><button>Add</button></td>
 <td><button>clear</button></td>
 <td style="text-align:center">${price3 }</td>
@@ -53,7 +60,8 @@ border: 1px solid black;
 </fieldset>
 <br></br>
 </form> 
-<a href="ordersummary.jsp">Place Order</a>    
+
+<a href="ordersummary">Place Order</a>  
 
 <hr/>	
 	<jsp:include page="footer.jsp"/>

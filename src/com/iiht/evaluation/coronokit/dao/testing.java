@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.ServletException;
+
 import com.iiht.evaluation.coronokit.model.KitDetail;
 import com.iiht.evaluation.exception.CoronaException;
 
@@ -17,37 +19,40 @@ public class testing {
 	public static final String ALLITEMS_FETCH_QRY="SELECT * from items";
 	
 	public static final String GET_ITEM_BY_NAME_QRY = "SELECT item,price,quantity from items WHERE item=?";
+	public static final String GET_ALL_ITEMNAMES_QRY = "SELECT item FROM items";
 
-	public static void main(String[] args) throws SQLException{
+	public static void main(String[] args) throws SQLException, CoronaException{
 		// TODO Auto-generated method stub
-try {
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/coronakit", "root", "admin");
 		
-		PreparedStatement pst = con.prepareStatement(GET_ITEM_BY_NAME_QRY);
-		KitDetail kit = new KitDetail();
-		pst.setString(1, "Sanitizer");
-		
-		ResultSet rs = pst.executeQuery();
-		
-		if(rs.next()) {
-			kit.setProductName(rs.getString(1));
-			kit.setPrice(rs.getInt(2));
-			kit.setQuantity(rs.getInt(3));
-	    
-		}
-		
-		String name = kit.getProductName();		
-		int price = kit.getPrice();		
-		int quantity = kit.getQuantity();	
-		System.out.println(name);
-		System.out.println(price);
-		System.out.println(quantity);
-	    
-	} catch (SQLException exp) {
-		System.out.println(exp);
-	}
-		
+	
 
+		
+				
+	
+		List<String> allitemnames = new ArrayList<String>();
+		try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/coronakit", "root", "admin");
+				PreparedStatement pst = con.prepareStatement(GET_ALL_ITEMNAMES_QRY);
+					){
+			
+			
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()) {
+			
+			String itemname = rs.getString(1);
+	        allitemnames.add(itemname);
+		
+			
+			}
+			
+			if(allitemnames.isEmpty()) {
+				allitemnames=null;	
+			}
+				
+			}catch(SQLException exp) {
+				exp.printStackTrace();	
+			
+			}
+		System.out.println(allitemnames);
 		}
 
 

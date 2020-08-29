@@ -14,6 +14,7 @@
 
 <hr>
 <form action="listproducts" method="GET">
+<a href="index.jsp">Home</a>  &nbsp;
 <button>All Items</button> &nbsp;
 <a href="addnewitems.jsp">Add Items</a>  
 </form>

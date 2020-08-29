@@ -56,7 +56,10 @@ public class KitDetail {
 
 	@Override
 	public String toString() {
-		return "KitDetail [productName=" + productName + ", quantity=" + quantity + ", price=" + price + "]";
+		return "KitDetail [productName=" + productName + ", quantity=" + quantity + ", price=" + price
+				+ ", totalamount=" + totalamount + "]";
 	}
+
+	
 	
 }
